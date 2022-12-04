@@ -7,9 +7,11 @@ import {defineComponent, ref} from "vue";
 // 全局引入vue-codemirror
 import {Codemirror} from "vue-codemirror";
 import {javascript} from "@codemirror/lang-javascript";
+import {java} from "@codemirror/lang-java";
 import {oneDark} from "@codemirror/theme-one-dark";
+import RibbonBar from "./components/RibbonBar.vue";
 
-const extensions = [javascript(), oneDark];
+const extensions = [java(), oneDark];
 
 // const CodeEditor = defineComponent({
 //   name: "Codemirror",
@@ -31,13 +33,14 @@ const extensions = [javascript(), oneDark];
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <!--    <h1>Welcome to Tauri!</h1>-->
+    <RibbonBar/>
 
     <Codemirror
         class="code"
         :extensions="extensions"
-        :style="{ height: '500px' ,width: '780px'}"
+        :style="{ height: '500px' ,width: '100%'}"
     />
 
     <!--    <div class="row">-->
