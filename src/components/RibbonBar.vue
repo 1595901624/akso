@@ -4,15 +4,42 @@ import {message} from "ant-design-vue";
 
 import {BuildFilled, FolderOpenFilled} from '@ant-design/icons-vue';
 
+import {resolveResource} from '@tauri-apps/api/path';
+import {readTextFile} from '@tauri-apps/api/fs'
+
 const greetMsg = ref("");
 const name = ref("");
 
-const activeKey = ref('2');
+const activeKey = ref('1');
+
+/**
+ * 选择文件
+ */
+const openFile = async () => {
+  let fileSelect = document.createElement('input')
+  fileSelect.setAttribute('id', 'file');
+  fileSelect.setAttribute('type', 'file');
+  fileSelect.setAttribute("style", 'visibility:hidden');
+  document.body.appendChild(fileSelect);
+  fileSelect.click();
+  fileSelect.value;
+  // message.info(fileSelect.value);
+  // document.querySelector('#file').addEventListener('change', e => {
+  //   // for (let entry of e.target.files) {
+  //   //   message.info(entry.name, entry.webkitRelativePath);
+  //   // }
+  //   message.info("121", 1)
+  // });
+}
 
 async function greet() {
   // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
   // greetMsg.value = await invoke("greet", {name: name.value});
-  message.info("213123");
+  // const resourceDirPath = await resourceDir();
+  // const resourcePath = await resolveResource('apktool/apktool_2.7.0.jar');
+  const resourceTestPath = await resolveResource('test.txt');
+  const text = await readTextFile(resourceTestPath)
+  message.info(text);
 }
 </script>
 
@@ -20,7 +47,7 @@ async function greet() {
   <div class="ribbon">
     <a-tabs class="ribbon-tab" v-model:activeKey="activeKey" type="card">
       <a-tab-pane class="ribbon-tab-pane" key="1" tab="Start">
-        <div class="ribbon-tab-button">
+        <div class="ribbon-tab-button" @click="openFile">
           <folder-open-filled :style="{fontSize: '20px', color: '#08c'}"/>
           <p class="ribbon-tab-text">Open</p>
         </div>
@@ -76,7 +103,7 @@ async function greet() {
   justify-content: center;
 }
 
-.ribbon-tab-button:hover{
+.ribbon-tab-button:hover {
   border-radius: 5px;
   cursor: pointer;
   background-color: #efebeb;
