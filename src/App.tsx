@@ -1,20 +1,23 @@
-import {useState} from "react";
+import { useState } from "react";
 import reactLogo from "./assets/react.svg";
-import {invoke} from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import HomeEmptyComponent from "./component/HomeEmptyComponent";
 
 function App() {
-    const [greetMsg, setGreetMsg] = useState("");
-    const [name, setName] = useState("");
+  const [greetMsg, setGreetMsg] = useState("");
+  const [name, setName] = useState("");
 
-    async function greet() {
-        // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-        setGreetMsg(await invoke("greet", {name}));
-    }
+  async function greet() {
+    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+    setGreetMsg(await invoke("greet", { name }));
+  }
 
-    return (
-        <div className="container">
-            <h1 className="underline">Welcome to Tauri!</h1>
+  return (
+    <div className="container">
+      <HomeEmptyComponent />
+
+      {/* <h1 className="underline">Welcome to Tauri!</h1>
 
             <div className="row">
                 <a href="https://vitejs.dev" target="_blank">
@@ -45,9 +48,13 @@ function App() {
                 <button type="submit">Greet</button>
             </form>
 
-            <p>{greetMsg}</p>
-        </div>
-    );
+            <p>{greetMsg}</p> */}
+    </div>
+
+    // <div className="container">
+    //
+    // </div>
+  );
 }
 
 export default App;
