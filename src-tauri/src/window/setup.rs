@@ -1,7 +1,7 @@
 use std::error::Error;
 
-use tauri::App;
 use tauri::menu::{MenuBuilder, SubmenuBuilder};
+use tauri::App;
 
 pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // 这里 `"quit".to_string()` 定义菜单项 ID，第二个参数是菜单项标签。
@@ -26,9 +26,7 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
         .undo()
         .redo()
         .build()?;
-    let menu = MenuBuilder::new(app)
-        .item(&submenu)
-        .build()?;
+    let menu = MenuBuilder::new(app).item(&submenu).build()?;
     app.set_menu(menu)?;
     Ok(())
 }
