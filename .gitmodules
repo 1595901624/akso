@@ -1,0 +1,3 @@
+[submodule "aapt2"]
+	path = aapt2
+	url = https://github.com/1595901624/aapt2-rs.git
