@@ -3,6 +3,15 @@
 version = 3
 
 [[package]]
+name = "aapt2"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "walkdir",
+]
+
+[[package]]
 name = "addr2line"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -30,6 +39,7 @@ dependencies = [
 name = "akso"
 version = "0.0.0"
 dependencies = [
+ "aapt2",
  "serde",
  "serde_json",
  "tauri",
