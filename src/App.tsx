@@ -1,25 +1,27 @@
-import {useState} from "react";
-import reactLogo from "./assets/react.svg";
-import {invoke} from "@tauri-apps/api/core";
+import { useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
+import { Manifest } from "./model/manifest";
 
 function App() {
-    const [greetMsg, setGreetMsg] = useState("");
-    const [name, setName] = useState("");
+  const [manifest, setManifest] = useState<Manifest>();
 
-    async function greet() {
-        // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-        setGreetMsg(await invoke("greet", {name}));
-    }
+  return (
+    <div className="container">
+      <HomeEmptyComponent
+        onSelectFile={(file) => {
+          const file_path = file.path;
+          invoke("get_app_manifest", { apk_path: file_path })
+            .then((res) => {
+                console.log(res)
+                setManifest(res as Manifest);
+            })
+            .catch((err) => console.log(err));
+        }}
+      />
 
-    return (
-        <div className="container">
-            <HomeEmptyComponent onSelectFile={(file) => {
-
-            }}/>
-
-            {/* <h1 className="underline">Welcome to Tauri!</h1>
+      {/* <h1 className="underline">Welcome to Tauri!</h1>
 
             <div className="row">
                 <a href="https://vitejs.dev" target="_blank">
@@ -51,12 +53,12 @@ function App() {
             </form>
 
             <p>{greetMsg}</p> */}
-        </div>
+    </div>
 
-        // <div className="container">
-        //
-        // </div>
-    );
+    // <div className="container">
+    //
+    // </div>
+  );
 }
 
 export default App;
