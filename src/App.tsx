@@ -4,9 +4,11 @@ import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
 import { Manifest } from "./model/manifest";
 import AppInformation from "./component/AppInformation";
+import { FileInfo } from "./model/file_info";
 
 function App() {
   const [manifest, setManifest] = useState<Manifest>();
+  const [fileInfo, setFileInfo] = useState<FileInfo>();
 
   return (
     <div className="absolute flex flex-col h-full w-full">
@@ -18,10 +20,19 @@ function App() {
         <HomeEmptyComponent
           onSelectFile={(file) => {
             const file_path = file.path;
+            // 获取apk信息
             invoke("get_app_manifest", { apk_path: file_path })
               .then((res) => {
                 console.log(res);
                 setManifest(res as Manifest);
+              })
+              .catch((err) => console.log(err));
+
+            // 获取文件信息
+            invoke("get_file_info", { apk_path: file_path })
+              .then((res) => {
+                console.log(res);
+                setFileInfo(res as FileInfo);
               })
               .catch((err) => console.log(err));
           }}
@@ -33,7 +44,7 @@ function App() {
           display: manifest != undefined ? "flex" : "none",
         }}
       >
-        <AppInformation manifest={manifest} />
+        <AppInformation manifest={manifest} fileInfo={fileInfo} />
       </div>
 
       {/* <h1 className="underline">Welcome to Tauri!</h1>
