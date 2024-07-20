@@ -7,7 +7,7 @@ type HomeEmptyComponentProps = {
 function HomeEmptyComponent(props: HomeEmptyComponentProps) {
   return (
     <div
-      className="absolute flex flex-col justify-center items-center h-screen w-screen"
+      className="absolute flex flex-col justify-center items-center h-full w-full"
       onClick={async () => {
         const file: FileResponse | null = await open({
           multiple: false,

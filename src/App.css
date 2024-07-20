@@ -5,6 +5,10 @@
 /*noinspection CssInvalidAtRule*/
 @tailwind utilities;
 
+body {
+  background-color: #f9f9f9;
+}
+
 /* .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
