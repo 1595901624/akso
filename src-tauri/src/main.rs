@@ -3,7 +3,7 @@
 
 mod command;
 mod window;
-
+mod model;
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 // #[tauri::command]
 // fn greet(name: &str) -> String {
@@ -16,7 +16,8 @@ fn main() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![
             command::greet,
-            command::get_app_manifest
+            command::get_app_manifest,
+            command::get_file_info,
         ])
         .setup(window::setup::setup)
         .run(tauri::generate_context!())

@@ -1,7 +1,11 @@
+import { FileInfo } from "../model/file_info";
 import { Manifest } from "../model/manifest";
 import "./AppInformation.css";
 
-type AppInformationProps = { manifest?: Manifest };
+type AppInformationProps = {
+  manifest?: Manifest;
+  fileInfo?: FileInfo;
+};
 
 function AppInformation(props: AppInformationProps) {
   return (
@@ -28,24 +32,31 @@ function AppInformation(props: AppInformationProps) {
       <div className="right-section w-full">
         <div className="file-info card">
           <h3 className="font-bold">文件信息</h3>
-          <p>
-            <strong className="badge">文件名</strong>rqo26oya (2).apk
-          </p>
-          <p>
-            <strong className="badge">文件大小</strong>90.89MB
-          </p>
-          <p>
-            <strong className="badge">MD5值</strong>
-            7c091623a73e3cf3b32d423087af172d
-          </p>
-          <p>
-            <strong className="badge">SHA1值</strong>
-            84efaaae1c0de98f1aafade05358ed3e7792d35
-          </p>
-          <p>
-            <strong className="badge">SHA256值</strong>
-            30ca179b8d14716fec755c7cbb41803b08d60071a998ad5db77bd818b4dfcb9b
-          </p>
+          <div>
+
+          </div>
+          <div>
+            <p>
+              <strong className="badge">文件名</strong>
+              {props.fileInfo?.name}
+            </p>
+            <p>
+              <strong className="badge">文件大小</strong>
+              {props.fileInfo?.format_size}
+            </p>
+            <p>
+              <strong className="badge">MD5值</strong>
+              {props.fileInfo?.md5}
+            </p>
+            <p>
+              <strong className="badge">SHA1值</strong>
+              {props.fileInfo?.sha1}
+            </p>
+            <p>
+              <strong className="badge">SHA256值</strong>
+              {props.fileInfo?.sha256}
+            </p>
+          </div>
         </div>
         <div className="apk-info card">
           <h3 className="font-bold">APK信息</h3>
@@ -81,13 +92,11 @@ function AppInformation(props: AppInformationProps) {
         <div className="apk-info card">
           <h3 className="font-bold">权限列表</h3>
           <p>
-            {
-              props.manifest?.uses_permissions.map((permission, index) => (
-                <p key={index} className="text-black">
-                  {permission}
-                </p>
-              ))
-            }
+            {props.manifest?.uses_permissions.map((permission, index) => (
+              <p key={index} className="text-black">
+                {permission}
+              </p>
+            ))}
           </p>
         </div>
       </div>
