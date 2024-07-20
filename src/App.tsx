@@ -3,23 +3,38 @@ import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
 import { Manifest } from "./model/manifest";
+import AppInformation from "./component/AppInformation";
 
 function App() {
   const [manifest, setManifest] = useState<Manifest>();
 
   return (
-    <div className="container">
-      <HomeEmptyComponent
-        onSelectFile={(file) => {
-          const file_path = file.path;
-          invoke("get_app_manifest", { apk_path: file_path })
-            .then((res) => {
-                console.log(res)
-                setManifest(res as Manifest);
-            })
-            .catch((err) => console.log(err));
+    <div className="absolute flex flex-col h-full w-full">
+      <div
+        style={{
+          display: manifest == undefined ? "flex" : "none",
         }}
-      />
+      >
+        <HomeEmptyComponent
+          onSelectFile={(file) => {
+            const file_path = file.path;
+            invoke("get_app_manifest", { apk_path: file_path })
+              .then((res) => {
+                console.log(res);
+                setManifest(res as Manifest);
+              })
+              .catch((err) => console.log(err));
+          }}
+        />
+      </div>
+
+      <div
+        style={{
+          display: manifest != undefined ? "flex" : "none",
+        }}
+      >
+        <AppInformation manifest={manifest} />
+      </div>
 
       {/* <h1 className="underline">Welcome to Tauri!</h1>
 

@@ -1,0 +1,83 @@
+.app-info-container {
+    display: flex;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.app-icon img {
+    width: 100px;
+    height: 100px;
+}
+
+.download-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.download-button:hover {
+    background-color: #45a049;
+}
+
+.right-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-info,
+.apk-info {
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: .25em .6em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    margin-right: 4px;
+    vertical-align: baseline;
+    border-radius: .30rem;
+    /* background-color: #6c757d !important; */
+    background-color: darkcyan;
+    color: #fff;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.card {
+    padding: 20px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    margin-bottom: 1rem;
+}
