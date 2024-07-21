@@ -1,53 +1,57 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
+import {useState} from "react";
+import {invoke} from "@tauri-apps/api/core";
 import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
-import { Manifest } from "./model/manifest";
+import {Manifest} from "./model/manifest";
 import AppInformation from "./component/AppInformation";
-import { FileInfo } from "./model/file_info";
+import {FileInfo} from "./model/file_info";
 
 function App() {
-  const [manifest, setManifest] = useState<Manifest>();
-  const [fileInfo, setFileInfo] = useState<FileInfo>();
+    const [manifest, setManifest] = useState<Manifest>();
+    const [fileInfo, setFileInfo] = useState<FileInfo>();
 
-  return (
-    <div className="absolute flex flex-col h-full w-full">
-      <div
-        style={{
-          display: manifest == undefined ? "flex" : "none",
-        }}
-      >
-        <HomeEmptyComponent
-          onSelectFile={(file) => {
-            const file_path = file.path;
-            // 获取apk信息
-            invoke("get_app_manifest", { apk_path: file_path })
-              .then((res) => {
-                console.log(res);
-                setManifest(res as Manifest);
-              })
-              .catch((err) => console.log(err));
+    return (
+        <div className="absolute flex flex-col h-full w-full">
+            <div
+                style={{
+                    display: manifest == undefined ? "flex" : "none",
+                }}
+            >
+                <HomeEmptyComponent
+                    onPrepareOpenDialog={() => {
+                        setFileInfo(undefined)
+                    }}
 
-            // 获取文件信息
-            invoke("get_file_info", { apk_path: file_path })
-              .then((res) => {
-                console.log(res);
-                setFileInfo(res as FileInfo);
-              })
-              .catch((err) => console.log(err));
-          }}
-        />
-      </div>
+                    onSelectFile={(file) => {
+                        const file_path = file.path;
+                        // 获取apk信息
+                        invoke("get_app_manifest", {apk_path: file_path})
+                            .then((res) => {
+                                console.log(res);
+                                setManifest(res as Manifest);
+                            })
+                            .catch((err) => console.log(err));
 
-      <div
-        style={{
-          display: manifest != undefined ? "flex" : "none",
-        }}
-      >
-        <AppInformation manifest={manifest} fileInfo={fileInfo} />
-      </div>
+                        // 获取文件信息
+                        invoke("get_file_info", {apk_path: file_path})
+                            .then((res) => {
+                                console.log(res);
+                                setFileInfo(res as FileInfo);
+                            })
+                            .catch((err) => console.log(err));
+                    }}
+                />
+            </div>
 
-      {/* <h1 className="underline">Welcome to Tauri!</h1>
+            <div
+                style={{
+                    display: manifest != undefined ? "flex" : "none",
+                }}
+            >
+                <AppInformation manifest={manifest} fileInfo={fileInfo}/>
+            </div>
+
+            {/* <h1 className="underline">Welcome to Tauri!</h1>
 
             <div className="row">
                 <a href="https://vitejs.dev" target="_blank">
@@ -79,12 +83,12 @@ function App() {
             </form>
 
             <p>{greetMsg}</p> */}
-    </div>
+        </div>
 
-    // <div className="container">
-    //
-    // </div>
-  );
+        // <div className="container">
+        //
+        // </div>
+    );
 }
 
 export default App;
