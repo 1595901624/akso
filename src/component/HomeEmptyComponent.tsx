@@ -1,6 +1,7 @@
 import {FileResponse, open} from "@tauri-apps/plugin-dialog";
 import {useEffect} from "react";
 import {UnlistenFn, listen} from '@tauri-apps/api/event';
+import {EVENT_OPEN_FILE} from "../event/menu_event.ts";
 
 type HomeEmptyComponentProps = {
     onPrepareOpenDialog?: () => void;
@@ -10,7 +11,7 @@ type HomeEmptyComponentProps = {
 function HomeEmptyComponent(props: HomeEmptyComponentProps) {
     useEffect(() => {
         let unlisten: void | UnlistenFn;
-        listen<string>('open', async (event) => {
+        listen<string>(EVENT_OPEN_FILE, async () => {
             await openDialog();
         })
             .then((res) => {
