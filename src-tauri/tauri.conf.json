@@ -30,8 +30,9 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "externalBin": [
-      "bin/aapt2"
-    ]
+    "externalBin": ["bin/aapt2"],
+    "resources": {
+      "resources/jadx": "jadx"
+    }
   }
 }
