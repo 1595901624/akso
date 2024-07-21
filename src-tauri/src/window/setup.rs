@@ -1,8 +1,8 @@
 use std::error::Error;
-use std::str::FromStr;
-use tauri::menu::{AboutMetadata, MenuBuilder, MenuId, PredefinedMenuItem, SubmenuBuilder};
+
 use tauri::{App, Emitter};
-use tauri::RunEvent::MenuEvent;
+use tauri::menu::{AboutMetadata, MenuBuilder, PredefinedMenuItem, SubmenuBuilder};
+use crate::event::menu_event;
 
 pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // 这里 `"quit".to_string()` 定义菜单项 ID，第二个参数是菜单项标签。
@@ -21,7 +21,7 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // app.set_menu(menu)?;
 
     let file_submenu = SubmenuBuilder::new(app, "文件")
-        .text("open", "打开")
+        .text(menu_event::EVENT_OPEN_FILE, "打开")
         .separator()
         .build()?;
 
@@ -57,9 +57,9 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     app.on_menu_event(move |app_handle, event| {
         // let open_id = MenuId::from_str("open").unwrap();
         match event.id().as_ref() {
-            "open" => {
+            menu_event::EVENT_OPEN_FILE => {
                 println!("open");
-                let _ = app_handle.emit("open", ());
+                let _ = app_handle.emit(menu_event::EVENT_OPEN_FILE, ());
             }
             _ => {}
         }

@@ -36,7 +36,9 @@ function App() {
                         invoke("get_file_info", {apk_path: file_path})
                             .then((res) => {
                                 console.log(res);
-                                setFileInfo(res as FileInfo);
+                                const fileInfo = res as FileInfo
+
+                                setFileInfo(fileInfo);
                             })
                             .catch((err) => console.log(err));
                     }}
