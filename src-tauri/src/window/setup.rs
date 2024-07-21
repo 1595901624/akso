@@ -19,7 +19,7 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // menu.add_item(MenuItem::Submenu("File", submenu));
     // app.set_menu(menu)?;
 
-    let submenu = SubmenuBuilder::new(app, "File")
+    let submenu = SubmenuBuilder::new(app, "文件")
         .copy()
         .paste()
         .separator()

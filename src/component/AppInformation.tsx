@@ -1,3 +1,4 @@
+import { Spin } from "antd";
 import { FileInfo } from "../model/file_info";
 import { Manifest } from "../model/manifest";
 import "./AppInformation.css";
@@ -32,10 +33,10 @@ function AppInformation(props: AppInformationProps) {
       <div className="right-section w-full">
         <div className="file-info card">
           <h3 className="font-bold">文件信息</h3>
-          <div>
-
+          <div className={`w-full flex flex-row justify-center ${props.fileInfo == undefined ? "visible" : "hidden"}`}>
+            <Spin />
           </div>
-          <div>
+          <div className={`${props.fileInfo == undefined ? "hidden" : "visible"}`}>
             <p>
               <strong className="badge">文件名</strong>
               {props.fileInfo?.name}
