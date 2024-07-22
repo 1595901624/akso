@@ -3,6 +3,7 @@ use std::error::Error;
 use tauri::{App, Emitter};
 use tauri::menu::{AboutMetadata, MenuBuilder, PredefinedMenuItem, SubmenuBuilder};
 use crate::event::menu_event;
+use crate::platform;
 
 pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // 这里 `"quit".to_string()` 定义菜单项 ID，第二个参数是菜单项标签。
@@ -43,8 +44,13 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     about_metadata.icon = Some(app.default_window_icon().cloned().unwrap());
     about_metadata.authors = Some(vec!["Cloris".to_string()]);
 
+    let mut about_aapt2_metadata = AboutMetadata::default();
+    about_aapt2_metadata.name = Some("AAPT2".to_string());
+    about_aapt2_metadata.version = Some(get_aapt2_version());
+
     let help_submenu = SubmenuBuilder::new(app, "帮助")
-        .item(&PredefinedMenuItem::about(app, Some("关于"), Some(about_metadata))?)
+        .item(&PredefinedMenuItem::about(app, Some("关于 AAPT2"), Some(about_aapt2_metadata))?)
+        .item(&PredefinedMenuItem::about(app, Some("关于 Akso"), Some(about_metadata))?)
         .build()?;
 
     let menu = MenuBuilder::new(app)
@@ -65,4 +71,9 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
         }
     });
     Ok(())
+}
+
+fn get_aapt2_version() -> String {
+    let aapt2 = platform::create_aapt2();
+    return aapt2.version().unwrap_or("Unknown".to_string());
 }

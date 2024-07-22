@@ -5,6 +5,7 @@ import HomeEmptyComponent from "./component/HomeEmptyComponent";
 import {Manifest} from "./model/manifest";
 import AppInformation from "./component/AppInformation";
 import {FileInfo} from "./model/file_info";
+import HeaderComponent from "./component/HeaderComponent.tsx";
 
 function App() {
     const [manifest, setManifest] = useState<Manifest>();
@@ -45,11 +46,12 @@ function App() {
                 />
             </div>
 
-            <div
+            <div className="flex flex-col flex-1"
                 style={{
                     display: manifest != undefined ? "flex" : "none",
                 }}
             >
+                <HeaderComponent />
                 <AppInformation manifest={manifest} fileInfo={fileInfo}/>
             </div>
 

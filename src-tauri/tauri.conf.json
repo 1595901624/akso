@@ -32,7 +32,8 @@
     ],
     "externalBin": ["bin/aapt2"],
     "resources": {
-      "resources/jadx": "jadx"
+      "resources/jadx": "jadx",
+      "resources/aapt2": "aapt2"
     }
   }
 }
