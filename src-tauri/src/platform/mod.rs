@@ -25,10 +25,8 @@ fn get_aapt2_path() -> PathBuf {
     return linux::get_exe_path();
 }
 
-fn create_aapt2() -> AAPT2 {
+pub(crate) fn create_aapt2() -> AAPT2 {
     AAPT2::from(get_aapt2_path())
 }
 
-fn start_jadx(apk_path: PathBuf) {
-
-}
+fn start_jadx(apk_path: PathBuf) {}
