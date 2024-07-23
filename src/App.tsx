@@ -8,6 +8,7 @@ import { FileInfo } from "./model/file_info";
 import HeaderComponent from "./component/HeaderComponent.tsx";
 
 function App() {
+  const [filePath, setFilePath] = useState<string>();
   const [manifest, setManifest] = useState<Manifest>();
   const [fileInfo, setFileInfo] = useState<FileInfo>();
 
@@ -18,7 +19,7 @@ function App() {
           manifest != undefined ? "visible" : "hidden"
         }`}
       >
-        <HeaderComponent />
+        <HeaderComponent apkPath={filePath} />
       </div>
 
       <div
@@ -32,6 +33,7 @@ function App() {
           }}
           onSelectFile={(file) => {
             const file_path = file.path;
+            setFilePath(file_path);
             // 获取apk信息
             invoke("get_app_manifest", { apk_path: file_path })
               .then((res) => {
