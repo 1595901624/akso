@@ -61,6 +61,12 @@ pub async fn get_file_info(apk_path: String) -> FileInfo {
     };
 }
 
+#[tauri::command(rename_all = "snake_case")]
+pub fn start_jadx_gui(apk_path: String) {
+    let jadx = platform::create_jadx();
+    jadx.start_gui(PathBuf::from(apk_path));
+}
+
 /// format size GB MB KB B
 fn format_size(size: u64) -> String {
     return if size < 1024 {

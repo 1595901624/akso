@@ -22,6 +22,7 @@ fn main() {
             command::greet,
             command::get_app_manifest,
             command::get_file_info,
+            command::start_jadx_gui
         ])
         .setup(window::setup::setup)
         .run(tauri::generate_context!())

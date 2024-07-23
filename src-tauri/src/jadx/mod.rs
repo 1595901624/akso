@@ -29,6 +29,14 @@ impl Jadx {
             Err(io::Error::new(io::ErrorKind::Other, String::from_utf8_lossy(&status.stderr)))
         };
     }
+
+    /// Start jadx-gui
+    pub fn start_gui(&self, apk_path: PathBuf) {
+        Command::new(self.gui_path.as_os_str())
+            .arg(apk_path.as_os_str())
+            .spawn()
+            .expect("Failed to start jadx-gui");
+    }
 }
 
 #[test]

@@ -65,5 +65,3 @@ pub(crate) fn create_jadx() -> Jadx {
     println!("jadx-gui path: {}", get_jadx_gui_path().display());
     Jadx::new(get_jadx_path(), get_jadx_gui_path())
 }
-
-fn start_jadx(apk_path: PathBuf) {}
