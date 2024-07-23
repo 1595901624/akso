@@ -7,6 +7,7 @@ interface RibbonProps {
 
 const RibbonWrapper = styled.div`
   position: relative;
+  cursor: default;
   display: inline-block;
   overflow: hidden;
   border-radius: 4px;
