@@ -48,7 +48,12 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     about_aapt2_metadata.name = Some("AAPT2".to_string());
     about_aapt2_metadata.version = Some(get_aapt2_version());
 
+    let mut about_jadx_metadata = AboutMetadata::default();
+    about_jadx_metadata.name = Some("Jadx".to_string());
+    about_jadx_metadata.version = Some(get_jadx_version());
+
     let help_submenu = SubmenuBuilder::new(app, "帮助")
+        .item(&PredefinedMenuItem::about(app, Some("关于 Jadx"), Some(about_jadx_metadata))?)
         .item(&PredefinedMenuItem::about(app, Some("关于 AAPT2"), Some(about_aapt2_metadata))?)
         .item(&PredefinedMenuItem::about(app, Some("关于 Akso"), Some(about_metadata))?)
         .build()?;
@@ -76,4 +81,9 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
 fn get_aapt2_version() -> String {
     let aapt2 = platform::create_aapt2();
     return aapt2.version().unwrap_or("Unknown".to_string());
+}
+
+fn get_jadx_version() -> String {
+    let jadx = platform::create_jadx();
+    return jadx.version().unwrap_or("Unknown".to_string());
 }
