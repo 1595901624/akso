@@ -36,7 +36,7 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
 
     let mut about_metadata = AboutMetadata::default();
     about_metadata.name = Some("Akso".to_string());
-    about_metadata.version = Some("0.1.0".to_string());
+    about_metadata.version = Some(app.package_info().version.to_string());
     about_metadata.website = Some("https://github.com/1595901624/akso".to_string());
     about_metadata.website_label = Some("GitHub".to_string());
     about_metadata.license = Some("MIT".to_string());
