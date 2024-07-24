@@ -1,4 +1,5 @@
 use std::io;
+use std::os::windows::process::CommandExt;
 use std::path::PathBuf;
 use std::process::Command;
 use crate::platform;
@@ -34,6 +35,7 @@ impl Jadx {
     pub fn start_gui(&self, apk_path: PathBuf) {
         Command::new(self.gui_path.as_os_str())
             .arg(apk_path.as_os_str())
+            .creation_flags(0x08000000)
             .spawn()
             .expect("Failed to start jadx-gui");
     }
