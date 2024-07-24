@@ -31,12 +31,24 @@ function AppInformation(props: AppInformationProps) {
         {/* <button className="download-button">下载APP</button> */}
       </div>
       <div className="right-section w-full">
-        <div className="file-info card">
+        <div
+          className="file-info card"
+          style={{
+            height: "193px",
+          }}
+        >
           <h3 className="font-bold">文件信息</h3>
-          <div className={`w-full flex flex-row justify-center ${props.fileInfo == undefined ? "visible" : "hidden"}`}>
+          <div
+            className={`w-full h-full flex flex-col justify-center items-center ${
+              props.fileInfo == undefined ? "visible" : "hidden"
+            }`}
+          >
             <Spin />
+            <p className="mt-3">正在获取文件信息...</p>
           </div>
-          <div className={`${props.fileInfo == undefined ? "hidden" : "visible"}`}>
+          <div
+            className={`${props.fileInfo == undefined ? "hidden" : "visible"}`}
+          >
             <p>
               <strong className="badge">文件名</strong>
               {props.fileInfo?.name}
@@ -90,7 +102,7 @@ function AppInformation(props: AppInformationProps) {
             {props.manifest?.native_code}
           </p>
         </div>
-        <div className="apk-info card">
+        {/* <div className="apk-info card">
           <h3 className="font-bold">权限列表</h3>
           <p>
             {props.manifest?.uses_permissions.map((permission, index) => (
@@ -99,7 +111,7 @@ function AppInformation(props: AppInformationProps) {
               </p>
             ))}
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

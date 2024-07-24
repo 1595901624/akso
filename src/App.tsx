@@ -4,23 +4,102 @@ import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
 import { Manifest } from "./model/manifest";
 import AppInformation from "./component/AppInformation";
+import {
+  AlignLeftOutlined,
+  FileProtectOutlined,
+  FileTextOutlined,
+  KeyOutlined,
+  SafetyCertificateOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from "@ant-design/icons";
 import { FileInfo } from "./model/file_info";
 import HeaderComponent from "./component/HeaderComponent.tsx";
+import { Layout, Menu, theme } from "antd";
+import Sider from "antd/es/layout/Sider";
+import { Content, Footer, Header } from "antd/es/layout/layout";
+import React from "react";
+
+const labels = ["基本信息", "权限信息", "加固信息", "其它信息"];
+
+const items = [
+  AlignLeftOutlined,
+  KeyOutlined,
+  SafetyCertificateOutlined,
+  FileTextOutlined,
+].map((icon, index) => ({
+  key: String(index + 1),
+  icon: React.createElement(icon),
+  label: labels[index],
+}));
 
 function App() {
   const [filePath, setFilePath] = useState<string>();
   const [manifest, setManifest] = useState<Manifest>();
   const [fileInfo, setFileInfo] = useState<FileInfo>();
 
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
   return (
-    <div className="absolute flex flex-col h-full w-full">
-      <div
+    <div className={`absolute flex flex-col h-full w-full`}>
+      {/* <div
         className={`position-absolute fixed w-full ${
           manifest != undefined ? "visible" : "hidden"
         }`}
       >
         <HeaderComponent apkPath={filePath} />
-      </div>
+      </div> */}
+
+      <Layout className={`${manifest == undefined ? "hidden" : "visible"}`}>
+        <Sider
+          breakpoint="sm"
+          collapsedWidth="1"
+          width={140}
+          collapsible={false}
+          onBreakpoint={(broken) => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
+        >
+          <div className="demo-logo-vertical" />
+          <Menu
+            className="h-full"
+            theme="light"
+            mode="inline"
+            defaultSelectedKeys={["4"]}
+            items={items}
+          />
+        </Sider>
+        <Layout>
+          <Header style={{ padding: 0, background: colorBgContainer }}>
+            <HeaderComponent apkPath={filePath} />
+          </Header>
+          <Content
+            className="w-full mt-6"
+            // style={{ margin: "24px 16px 0" }}
+          >
+            <div
+              style={{
+                height: "100%",
+                // padding: 24,
+                // minHeight: 360,
+                background: colorBgContainer,
+                // borderRadius: borderRadiusLG,
+              }}
+            >
+              <AppInformation manifest={manifest} fileInfo={fileInfo} />
+            </div>
+          </Content>
+          {/* <Footer style={{ textAlign: 'center' }}>
+          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+        </Footer> */}
+        </Layout>
+      </Layout>
 
       <div
         style={{
@@ -55,14 +134,14 @@ function App() {
         />
       </div>
 
-      <div
+      {/* <div
         className="flex flex-col flex-1 mt-20"
         style={{
           display: manifest != undefined ? "flex" : "none",
         }}
       >
         <AppInformation manifest={manifest} fileInfo={fileInfo} />
-      </div>
+      </div> */}
 
       {/* <h1 className="underline">Welcome to Tauri!</h1>
 

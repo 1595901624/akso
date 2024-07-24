@@ -22,7 +22,7 @@ function HeaderComponent(props: HeaderComponentProps) {
               });
             }}
           >
-            <img src={jadxLogo} className="h-8 w-8 mr-2" />
+            <img src={jadxLogo} className="h-6 w-6" />
             <span className="text-sm font-bold mt-2">查看Java代码</span>
           </div>
         </Ribbon>
