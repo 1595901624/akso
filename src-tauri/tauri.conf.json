@@ -1,7 +1,7 @@
 {
-  "productName": "akso",
-  "version": "0.0.0",
-  "identifier": "com.tauri.dev",
+  "productName": "Akso",
+  "version": "0.0.1",
+  "identifier": "com.hy.akso",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "akso",
+        "title": "Akso",
         "width": 900,
         "height": 620,
         "center": true
