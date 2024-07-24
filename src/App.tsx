@@ -16,10 +16,11 @@ import {
 } from "@ant-design/icons";
 import { FileInfo } from "./model/file_info";
 import HeaderComponent from "./component/HeaderComponent.tsx";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, message, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import React from "react";
+import PermissionInformation from "./component/PermissionInformation.tsx";
 
 const labels = ["基本信息", "权限信息", "加固信息", "其它信息"];
 
@@ -29,7 +30,7 @@ const items = [
   SafetyCertificateOutlined,
   FileTextOutlined,
 ].map((icon, index) => ({
-  key: String(index + 1),
+  key: String(index),
   icon: React.createElement(icon),
   label: labels[index],
 }));
@@ -42,6 +43,32 @@ function App() {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  const [selectedMenuKey, setSelectedMenuKey] = useState<string>("0");
+
+  /**
+   * 获取内容组件
+   * @returns
+   */
+  const getContentLayout = () => {
+    // if (selectedMenuKey == "0") {
+    //   return (
+    //       <AppInformation manifest={manifest} fileInfo={fileInfo} />
+    //   );
+    // }
+    // return ;
+    switch (selectedMenuKey) {
+      case "0":
+        return <AppInformation manifest={manifest} fileInfo={fileInfo} />;
+      case "1":
+        return <PermissionInformation manifest={manifest}/>;
+      case "2":
+        return <div>加固信息</div>;
+      case "3":
+        return <div>其它信息</div>;
+    }
+    return null;
+  };
 
   return (
     <div className={`absolute flex flex-col h-full w-full`}>
@@ -71,7 +98,11 @@ function App() {
             className="h-full"
             theme="light"
             mode="inline"
-            defaultSelectedKeys={["4"]}
+            defaultSelectedKeys={["0"]}
+            onSelect={(item) => {
+              // message.info(item.key);
+              setSelectedMenuKey(item.key);
+            }}
             items={items}
           />
         </Sider>
@@ -92,7 +123,7 @@ function App() {
                 // borderRadius: borderRadiusLG,
               }}
             >
-              <AppInformation manifest={manifest} fileInfo={fileInfo} />
+              {getContentLayout()}
             </div>
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>

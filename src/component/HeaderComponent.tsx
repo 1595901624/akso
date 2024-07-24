@@ -23,7 +23,15 @@ function HeaderComponent(props: HeaderComponentProps) {
             }}
           >
             <img src={jadxLogo} className="h-6 w-6" />
-            <span className="text-sm font-bold mt-2">查看Java代码</span>
+            <div
+              className="font-bold mt-3.5"  
+              style={{
+                fontSize: "12px",
+                lineHeight: "12px",
+              }}
+            >
+              查看Java代码
+            </div>
           </div>
         </Ribbon>
       </div>
