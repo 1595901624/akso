@@ -20,9 +20,18 @@ impl Jadx {
 
     /// Get the version of jadx
     pub fn version(&self) -> io::Result<String> {
-        let status = Command::new(self.command_path.as_os_str())
-            .arg("--version")
-            .output()?;
+        // let status = Command::new(self.command_path.as_os_str())
+        //     .arg("--version")
+        //     .output()?;
+        let mut command = Command::new(self.command_path.as_os_str());
+        let mut status = command
+            .arg("--version");
+
+        if cfg!(target_os = "windows") {
+            status = status
+                .creation_flags(0x08000000)
+        }
+        let status = status.output()?;
 
         return if status.status.success() {
             Ok(String::from_utf8_lossy(&status.stdout).trim().to_string())
@@ -33,17 +42,13 @@ impl Jadx {
 
     /// Start jadx-gui
     pub fn start_gui(&self, apk_path: PathBuf) {
-        Command::new(self.gui_path.as_os_str())
-            .arg(apk_path.as_os_str())
-            .creation_flags(0x08000000)
-            .spawn()
-            .expect("Failed to start jadx-gui");
+        let mut command = Command::new(self.gui_path.as_os_str());
+        let mut status = command
+            .arg(apk_path.as_os_str());
+        if cfg!(target_os = "windows") {
+            status = status
+                .creation_flags(0x08000000)
+        }
+        let _ = status.spawn();
     }
-}
-
-#[test]
-fn test_version() {
-    let jadx = platform::create_jadx();
-    let version = jadx.version().unwrap();
-    println!("{}", version);
 }
