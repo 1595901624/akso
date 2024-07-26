@@ -1,0 +1,20 @@
+.ad-body {
+  width: 100%;
+  height: 240px;
+
+  .ant-table-wrapper {
+    height: 100%;
+
+    .ant-spin-container {
+      height: 100%;
+
+      .ant-table-body {
+        height: calc(100% - 44px) !important;
+
+        .ant-empty {
+          padding-top: 52px;
+        }
+      }
+    }
+  }
+}
