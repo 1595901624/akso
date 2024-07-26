@@ -102,8 +102,9 @@ function getNormalPermission(uses_permissions: string[]) {
   const normalPermission = uses_permissions
     .filter((permission) => {
       return (
-        !dangerousPermissionNameList.includes(permission.trim()) &&
-        permission.startsWith("android.permission")
+        !dangerousPermissionNameList.includes(permission.trim()) 
+        && (permission.startsWith("android.permission")
+         || permission.startsWith("com.android.launcher"))
       );
     })
     .flatMap((permission, index) => {
@@ -138,7 +139,7 @@ function getNormalPermission(uses_permissions: string[]) {
 function getPrivatePermission(uses_permissions: string[]) {
   const privatePermission = uses_permissions
     .filter((permission) => {
-      return !permission.startsWith("android.permission");
+      return !permission.startsWith("android.permission") && !permission.startsWith("com.android.launcher");
     })
     .flatMap((permission, index) => {
       return [
@@ -169,11 +170,11 @@ function getPermissionColor(permission: string) {
     return "red";
   }
 
-  if (!permission.startsWith("android.permission")) {
-    return "darkcyan";
+  if (permission.startsWith("android.permission") || permission.startsWith("com.android.launcher")) {
+    return "black";
   }
 
-  return "black";
+  return "darkcyan";
 }
 
 function PermissionInformation(props: PermissionInformationProps) {
@@ -201,7 +202,7 @@ function PermissionInformation(props: PermissionInformationProps) {
     );
     setSortPermissionList(tempSortPermissionList ?? []);
 
-    setDataSource(getAllPermissions(sortPermissionList));
+    setDataSource(getAllPermissions(tempSortPermissionList ?? []));
   }, [props.manifest?.uses_permissions]);
 
   const columns = [
@@ -228,7 +229,8 @@ function PermissionInformation(props: PermissionInformationProps) {
             fontSize: "13px",
             fontWeight: `${
               dangerousPermissionNameList.includes(text) ||
-              !text.startsWith("android.permission")
+              !text.startsWith("android.permission") ||
+              !text.startsWith("com.android.launcher") 
                 ? "bold"
                 : ""
             }`,
@@ -255,6 +257,8 @@ function PermissionInformation(props: PermissionInformationProps) {
       <div className="">
         {/* <h1 className="text-2xl font-bold">权限信息</h1> */}
         <Segmented<string>
+          defaultValue="所有权限"
+          className="mt-4"
           options={["所有权限", "高危权限", "普通权限", "私有权限"]}
           onChange={(value) => {
             // console.log(value); // string
