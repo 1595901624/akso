@@ -1,4 +1,4 @@
-import { Segmented, Table } from "antd";
+import { message, Segmented, Table } from "antd";
 import { Manifest } from "../model/manifest";
 import "./PermissionInformation.css";
 import { useEffect, useState } from "react";
@@ -101,7 +101,10 @@ function getDangerousPermission(uses_permissions: string[]) {
 function getNormalPermission(uses_permissions: string[]) {
   const normalPermission = uses_permissions
     .filter((permission) => {
-      return !dangerousPermissionNameList.includes(permission.trim());
+      return (
+        !dangerousPermissionNameList.includes(permission.trim()) &&
+        permission.startsWith("android.permission")
+      );
     })
     .flatMap((permission, index) => {
       return [
@@ -129,8 +132,8 @@ function getNormalPermission(uses_permissions: string[]) {
 
 /**
  * 获取私有权限
- * @param uses_permissions 
- * @returns 
+ * @param uses_permissions
+ * @returns
  */
 function getPrivatePermission(uses_permissions: string[]) {
   const privatePermission = uses_permissions
@@ -161,11 +164,44 @@ function getPrivatePermission(uses_permissions: string[]) {
   return privatePermission;
 }
 
+function getPermissionColor(permission: string) {
+  if (dangerousPermissionNameList.includes(permission)) {
+    return "red";
+  }
+
+  if (!permission.startsWith("android.permission")) {
+    return "darkcyan";
+  }
+
+  return "black";
+}
+
 function PermissionInformation(props: PermissionInformationProps) {
+  // 排序
+  const [sortPermissionList, setSortPermissionList] = useState<string[]>([]);
   const [dataSource, setDataSource] = useState<any[]>([]);
 
   useEffect(() => {
-    setDataSource(getAllPermissions(props.manifest?.uses_permissions ?? []));
+    const tempSortPermissionList = props.manifest?.uses_permissions?.sort(
+      (a, b) => {
+        if (
+          dangerousPermissionNameList.includes(a) &&
+          !dangerousPermissionNameList.includes(b)
+        ) {
+          return -1;
+        }
+        if (
+          !dangerousPermissionNameList.includes(a) &&
+          dangerousPermissionNameList.includes(b)
+        ) {
+          return 1;
+        }
+        return a.localeCompare(b);
+      }
+    );
+    setSortPermissionList(tempSortPermissionList ?? []);
+
+    setDataSource(getAllPermissions(sortPermissionList));
   }, [props.manifest?.uses_permissions]);
 
   const columns = [
@@ -173,11 +209,44 @@ function PermissionInformation(props: PermissionInformationProps) {
       title: "权限",
       dataIndex: "permission",
       key: "permission",
+      width: 400,
+      ellipsis: true,
+      render: (text: string) => (
+        <span
+          onDoubleClick={() => {
+            navigator.clipboard
+              .writeText(text)
+              .then(() => {
+                message.success("复制成功");
+              })
+              .catch((err) => {
+                message.error("复制失败");
+                console.error("复制失败", err);
+              });
+          }}
+          style={{
+            fontSize: "13px",
+            fontWeight: `${
+              dangerousPermissionNameList.includes(text) ||
+              !text.startsWith("android.permission")
+                ? "bold"
+                : ""
+            }`,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            color: `${getPermissionColor(text)}`,
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: "备注",
       dataIndex: "note",
       key: "note",
+      width: 300,
     },
   ];
 
@@ -190,21 +259,13 @@ function PermissionInformation(props: PermissionInformationProps) {
           onChange={(value) => {
             // console.log(value); // string
             if (value == "所有权限") {
-              setDataSource(
-                getAllPermissions(props.manifest?.uses_permissions ?? [])
-              );
+              setDataSource(getAllPermissions(sortPermissionList));
             } else if (value == "高危权限") {
-              setDataSource(
-                getDangerousPermission(props.manifest?.uses_permissions ?? [])
-              );
+              setDataSource(getDangerousPermission(sortPermissionList));
             } else if (value == "普通权限") {
-              setDataSource(
-                getNormalPermission(props.manifest?.uses_permissions ?? [])
-              );
+              setDataSource(getNormalPermission(sortPermissionList));
             } else if (value == "私有权限") {
-              setDataSource(
-                getPrivatePermission(props.manifest?.uses_permissions ?? [])
-              );
+              setDataSource(getPrivatePermission(sortPermissionList));
             }
           }}
         />
