@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
@@ -147,8 +147,20 @@ function App() {
             // 获取apk信息
             invoke("get_app_manifest", { apk_path: file_path })
               .then((res) => {
-                console.log(res);
-                setManifest(res as Manifest);
+                // console.log(res);
+                const m = res as Manifest;
+                setManifest(m);
+
+                // unzip
+                console.log("==============",m?.package?.name);
+                if (m?.package?.name != undefined) {
+                  invoke("unzip_apk", { apk_path: file_path, package_name: m?.package?.name })
+                      .then((res) => {
+                        console.log(res);
+                      })
+                      .catch((err) => console.log(err));
+                }
+
               })
               .catch((err) => console.log(err));
 

@@ -34,7 +34,7 @@ function HomeEmptyComponent(props: HomeEmptyComponentProps) {
         }
         props.onPrepareOpenDialog?.();
         props.onSelectFile?.(file);
-        console.log(file);
+        // console.log(file);
     }
 
     return (

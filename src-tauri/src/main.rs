@@ -8,6 +8,7 @@ mod model;
 mod event;
 mod platform;
 mod jadx;
+mod util;
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 // #[tauri::command]
 // fn greet(name: &str) -> String {
@@ -22,7 +23,8 @@ fn main() {
             command::greet,
             command::get_app_manifest,
             command::get_file_info,
-            command::start_jadx_gui
+            command::start_jadx_gui,
+            command::unzip_apk
         ])
         .setup(window::setup::setup)
         .run(tauri::generate_context!())
