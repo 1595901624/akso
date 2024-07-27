@@ -1,15 +1,14 @@
-use std::path::PathBuf;
-use aapt2::aapt2::aapt2::AAPT2;
 use crate::jadx::Jadx;
+use aapt2::aapt2::aapt2::AAPT2;
+use std::path::PathBuf;
 
-#[cfg(target_os = "windows")]
-mod win;
 #[cfg(target_os = "macos")]
 mod macos;
+#[cfg(target_os = "windows")]
+mod win;
 
 #[cfg(target_os = "linux")]
 mod linux;
-
 
 #[cfg(target_os = "macos")]
 fn get_aapt2_path() -> PathBuf {

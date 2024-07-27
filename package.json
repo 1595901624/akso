@@ -13,6 +13,7 @@
     "@ant-design/icons": "^5.4.0",
     "@tauri-apps/api": ">=2.0.0-beta.0",
     "@tauri-apps/plugin-dialog": "2.0.0-beta.7",
+    "@tauri-apps/plugin-fs": "2.0.0-beta.7",
     "@tauri-apps/plugin-shell": ">=2.0.0-beta.0",
     "@types/styled-components": "^5.1.34",
     "antd": "^5.19.3",
