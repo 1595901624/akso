@@ -3,8 +3,8 @@ use std::io::Read;
 use std::path::PathBuf;
 
 use aapt2::model::manifest::Manifest;
-use sha::{sha1, sha256};
 use sha::utils::{Digest, DigestExt};
+use sha::{sha1, sha256};
 
 use crate::model::file_info::FileInfo;
 use crate::{platform, util};
@@ -69,12 +69,15 @@ pub fn start_jadx_gui(apk_path: String) {
 
 /// unzip apk
 #[tauri::command(rename_all = "snake_case")]
-pub async fn unzip_apk(apk_path: String, package_name: String) -> bool {
-    println!("unzip_apk, apk path: {}, package name: {}", apk_path, package_name);
+pub async fn unzip_apk(apk_path: String, dest_path: String) -> bool {
+    // println!(
+    //     "unzip_apk, apk path: {}, package name: {}",
+    //     apk_path, package_name
+    // );
 
-    let dest_path = util::file::get_project_cache_path().join(package_name);
-    println!("unzip_apk, dest path: {}", &dest_path.display());
-
+    // let dest_path = util::file::get_project_cache_path().join(package_name);
+    // println!("unzip_apk, dest path: {}", &dest_path.display());
+    let dest_path = PathBuf::from(dest_path);
     if !dest_path.exists() {
         std::fs::create_dir_all(&dest_path).unwrap();
     }

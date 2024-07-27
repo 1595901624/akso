@@ -27,23 +27,23 @@ pub(crate) fn unzip_file(zip_path: String, dest_path: String) -> zip::result::Zi
             None => continue,
         };
 
-        {
-            let comment = file.comment();
-            if !comment.is_empty() {
-                println!("File {} comment: {}", i, comment);
-            }
-        }
+        // {
+        //     let comment = file.comment();
+        //     if !comment.is_empty() {
+        //         println!("File {} comment: {}", i, comment);
+        //     }
+        // }
 
         if file.name().ends_with('/') {
-            println!("File {} extracted to \"{}\"", i, out_path.display());
+            // println!("File {} extracted to \"{}\"", i, out_path.display());
             std::fs::create_dir_all(&out_path)?;
         } else {
-            println!(
-                "File {} extracted to \"{}\" ({} bytes)",
-                i,
-                out_path.display(),
-                file.size()
-            );
+            // println!(
+            //     "File {} extracted to \"{}\" ({} bytes)",
+            //     i,
+            //     out_path.display(),
+            //     file.size()
+            // );
             if let Some(p) = out_path.parent() {
                 if !p.exists() {
                     std::fs::create_dir_all(&p)?;

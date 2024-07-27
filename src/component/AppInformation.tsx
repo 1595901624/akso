@@ -2,6 +2,10 @@ import { Spin } from "antd";
 import { FileInfo } from "../model/file_info";
 import { Manifest } from "../model/manifest";
 import "./AppInformation.css";
+import { readFile, BaseDirectory } from "@tauri-apps/plugin-fs";
+import { useEffect, useState } from "react";
+import { appLocalDataDir, join } from "@tauri-apps/api/path";
+import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 
 type AppInformationProps = {
   manifest?: Manifest;
@@ -9,6 +13,18 @@ type AppInformationProps = {
 };
 
 function AppInformation(props: AppInformationProps) {
+  const [logoPath, setLogoPath] = useState<string>();
+
+  useEffect(() => {
+    appLocalDataDir().then((path) => {
+      join(path, "hjq_icon_logo.png").then((x) => {
+        setLogoPath(convertFileSrc(x));
+        console.log(convertFileSrc(x));
+      });
+    });
+
+  }, [props.manifest]);
+
   return (
     // <div className="main-content">
     //   <div className="apk-info">
@@ -24,10 +40,11 @@ function AppInformation(props: AppInformationProps) {
     //   </div>
     // </div>
     <div className="app-info-container w-full">
-      <div className="left-section w-auto">
-        <div className="app-icon">
-          <img src="app-icon-url.png" alt="App Icon" />
+      <div className="left-section w-20 flex flex-col items-center">
+        <div className="object-center w-16">
+          <img src={logoPath} alt="App Icon" />
         </div>
+        <p className="text-center text-sm"></p>
         {/* <button className="download-button">下载APP</button> */}
       </div>
       <div className="right-section w-full">
