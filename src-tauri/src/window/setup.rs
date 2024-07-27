@@ -1,9 +1,10 @@
 use std::error::Error;
 
-use tauri::{App, Emitter};
-use tauri::menu::{AboutMetadata, MenuBuilder, PredefinedMenuItem, SubmenuBuilder};
 use crate::event::menu_event;
 use crate::platform;
+use tauri::menu::{AboutMetadata, MenuBuilder, PredefinedMenuItem, SubmenuBuilder};
+use tauri::{App, Emitter};
+use tauri_plugin_fs::FsExt;
 
 pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // 这里 `"quit".to_string()` 定义菜单项 ID，第二个参数是菜单项标签。
@@ -20,6 +21,8 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     // let menu = MenuBuilder::new(app);
     // menu.add_item(MenuItem::Submenu("File", submenu));
     // app.set_menu(menu)?;
+
+    // println!("scope: {}", scope.allow_directory(path, recursive));
 
     let file_submenu = SubmenuBuilder::new(app, "文件")
         .text(menu_event::EVENT_OPEN_FILE, "打开")
@@ -53,9 +56,21 @@ pub fn setup(app: &mut App) -> Result<(), Box<dyn Error>> {
     about_jadx_metadata.version = Some(get_jadx_version());
 
     let help_submenu = SubmenuBuilder::new(app, "帮助")
-        .item(&PredefinedMenuItem::about(app, Some("关于 Jadx"), Some(about_jadx_metadata))?)
-        .item(&PredefinedMenuItem::about(app, Some("关于 AAPT2"), Some(about_aapt2_metadata))?)
-        .item(&PredefinedMenuItem::about(app, Some("关于 Akso"), Some(about_metadata))?)
+        .item(&PredefinedMenuItem::about(
+            app,
+            Some("关于 Jadx"),
+            Some(about_jadx_metadata),
+        )?)
+        .item(&PredefinedMenuItem::about(
+            app,
+            Some("关于 AAPT2"),
+            Some(about_aapt2_metadata),
+        )?)
+        .item(&PredefinedMenuItem::about(
+            app,
+            Some("关于 Akso"),
+            Some(about_metadata),
+        )?)
         .build()?;
 
     let menu = MenuBuilder::new(app)
