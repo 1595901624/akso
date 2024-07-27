@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import HomeEmptyComponent from "./component/HomeEmptyComponent";
@@ -21,6 +21,7 @@ import Sider from "antd/es/layout/Sider";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import React from "react";
 import PermissionInformation from "./component/PermissionInformation.tsx";
+import { appLocalDataDir, join } from "@tauri-apps/api/path";
 
 const labels = ["基本信息", "权限信息", "加固信息", "其它信息"];
 
@@ -46,6 +47,9 @@ function App() {
 
   const [selectedMenuKey, setSelectedMenuKey] = useState<string>("0");
 
+  // 解压目录
+  const [unzipPath, setUnzipPath] = useState<string>();
+
   /**
    * 获取内容组件
    * @returns
@@ -61,7 +65,7 @@ function App() {
       case "0":
         return <AppInformation manifest={manifest} fileInfo={fileInfo} />;
       case "1":
-        return <PermissionInformation manifest={manifest}/>;
+        return <PermissionInformation manifest={manifest} />;
       case "2":
         return <div>加固信息</div>;
       case "3":
@@ -146,21 +150,30 @@ function App() {
             setFilePath(file_path);
             // 获取apk信息
             invoke("get_app_manifest", { apk_path: file_path })
-              .then((res) => {
+              .then(async (res) => {
                 // console.log(res);
                 const m = res as Manifest;
                 setManifest(m);
 
                 // unzip
-                console.log("==============",m?.package?.name);
+                console.log("==============", m?.package?.name);
                 if (m?.package?.name != undefined) {
-                  invoke("unzip_apk", { apk_path: file_path, package_name: m?.package?.name })
-                      .then((res) => {
-                        console.log(res);
-                      })
-                      .catch((err) => console.log(err));
-                }
+                  const localDataDir = await appLocalDataDir();
+                  const unzipTempPath = await join(
+                    localDataDir,
+                    "project",
+                    m?.package?.name ?? ""
+                  );
 
+                  invoke("unzip_apk", {
+                    apk_path: file_path,
+                    dest_path: unzipTempPath,
+                  })
+                    .then((res) => {
+                      setUnzipPath(unzipTempPath);
+                    })
+                    .catch((err) => console.log(err));
+                }
               })
               .catch((err) => console.log(err));
 
