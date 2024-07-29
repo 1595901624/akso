@@ -63,7 +63,13 @@ function App() {
     // return ;
     switch (selectedMenuKey) {
       case "0":
-        return <AppInformation manifest={manifest} fileInfo={fileInfo} />;
+        return (
+          <AppInformation
+            manifest={manifest}
+            fileInfo={fileInfo}
+            unzipPath={unzipPath}
+          />
+        );
       case "1":
         return <PermissionInformation manifest={manifest} />;
       case "2":
