@@ -10,20 +10,31 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 type AppInformationProps = {
   manifest?: Manifest;
   fileInfo?: FileInfo;
+  unzipPath?: string;
 };
 
 function AppInformation(props: AppInformationProps) {
   const [logoPath, setLogoPath] = useState<string>();
 
   useEffect(() => {
-    appLocalDataDir().then((path) => {
-      join(path, "hjq_icon_logo.png").then((x) => {
-        setLogoPath(convertFileSrc(x));
-        console.log(convertFileSrc(x));
-      });
-    });
-
-  }, [props.manifest]);
+    // appLocalDataDir().then((path) => {
+    //   join(path, "hjq_icon_logo.png").then((x) => {
+    //     setLogoPath(convertFileSrc(x));
+    //     console.log(convertFileSrc(x));
+    //   });
+    // });
+    if (props.manifest != null && props.unzipPath != null) {
+      if (props.manifest.application.icon != null) {
+          join(
+            props.unzipPath ?? "",
+            props.manifest.application.icon ?? ""
+          ).then((iconPath) => {
+            setLogoPath(convertFileSrc(iconPath));
+            console.log(convertFileSrc(iconPath));
+          });
+      }
+    }
+  }, [props.manifest, props.unzipPath]);
 
   return (
     // <div className="main-content">

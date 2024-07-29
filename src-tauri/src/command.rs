@@ -1,3 +1,4 @@
+use std::error::Error;
 use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
@@ -84,6 +85,8 @@ pub async fn unzip_apk(apk_path: String, dest_path: String) -> bool {
 
     let result = util::file::unzip_file(apk_path, dest_path.to_str().unwrap().to_string());
     if result.is_err() {
+        let error = result.err().unwrap();
+        println!("unzip_apk error: {}", error.to_string());
         return false;
     }
     return true;

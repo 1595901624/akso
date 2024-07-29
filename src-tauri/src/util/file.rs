@@ -22,11 +22,12 @@ pub(crate) fn unzip_file(zip_path: String, dest_path: String) -> zip::result::Zi
 
     for i in 0..archive.len() {
         let mut file = archive.by_index(i)?;
+        println!("Unzipping file {}", file.name());
         let out_path = match file.enclosed_name() {
             Some(path) => PathBuf::from(&dest_path).join(path),
             None => continue,
         };
-
+        
         // {
         //     let comment = file.comment();
         //     if !comment.is_empty() {
@@ -50,7 +51,7 @@ pub(crate) fn unzip_file(zip_path: String, dest_path: String) -> zip::result::Zi
                 }
             }
             let mut outfile = File::create(&out_path)?;
-            std::io::copy(&mut file, &mut outfile)?;
+            // std::io::copy(&mut file, &mut outfile)?;
         }
 
         #[cfg(unix)]
