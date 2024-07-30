@@ -6,6 +6,7 @@ import { readFile, BaseDirectory } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { appLocalDataDir, join } from "@tauri-apps/api/path";
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+import { manifestUtil } from "../util/manifest_util";
 
 type AppInformationProps = {
   manifest?: Manifest;
@@ -27,7 +28,7 @@ function AppInformation(props: AppInformationProps) {
       if (props.manifest.application.icon != null) {
           join(
             props.unzipPath ?? "",
-            props.manifest.application.icon ?? ""
+            manifestUtil.getAppIconPath(props.manifest)
           ).then((iconPath) => {
             setLogoPath(convertFileSrc(iconPath));
             console.log(convertFileSrc(iconPath));
@@ -53,7 +54,7 @@ function AppInformation(props: AppInformationProps) {
     <div className="app-info-container w-full">
       <div className="left-section w-20 flex flex-col items-center">
         <div className="object-center w-16">
-          <img src={logoPath} alt="App Icon" />
+          <img src={logoPath} alt="" />
         </div>
         <p className="text-center text-sm"></p>
         {/* <button className="download-button">下载APP</button> */}
