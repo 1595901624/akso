@@ -54,14 +54,14 @@ pub(crate) fn unzip_file(zip_path: String, dest_path: String) -> zip::result::Zi
             std::io::copy(&mut file, &mut outfile)?;
         }
 
-        #[cfg(unix)]
-        {
-            use std::os::unix::fs::PermissionsExt;
+        // #[cfg(unix)]
+        // {
+        //     use std::os::unix::fs::PermissionsExt;
 
-            if let Some(mode) = file.unix_mode() {
-                std::fs::set_permissions(&out_path, std::fs::Permissions::from_mode(mode)).unwrap();
-            }
-        }
+        //     if let Some(mode) = file.unix_mode() {
+        //         std::fs::set_permissions(&out_path, std::fs::Permissions::from_mode(mode)).unwrap();
+        //     }
+        // }
     }
     Ok(())
 }
